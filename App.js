@@ -7,7 +7,10 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Alert,
+  Pressable,
   Linking,
+  Modal,
   View,
 } from 'react-native';
 
@@ -25,6 +28,7 @@ const App = () => {
   const [feedBackMessage, setFeedBackMessage] = useState('');
   const [showFeedBackMessageBox, setShowFeedBackMessageBox] = useState(false);
   const [ratingModal, setRatingModal] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if (defaultRating > 3) {
@@ -67,6 +71,8 @@ const App = () => {
   };
 
   const handleSubmitFeedback = () => {
+    setRatingModal(false);
+    setModalVisible(false);
     console.log('Handle Submit button -> ', feedBackMessage);
   };
 
@@ -96,48 +102,58 @@ const App = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {ratingModal ? (
-        <SafeAreaView style={styles.container}>
-          <View style={styles.ratingContainer}>
-            <View style={styles.textContainer}>
-              <Text style={styles.textStyle}>Enjoying RacketPal?</Text>
-              <Text>Tap a star to rate it on the AppStore</Text>
-            </View>
-            <CustomRatingBar />
-            {/* <Text style={styles.textStyle}>
+    <View style={styles.centeredView}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.container}>
+          <SafeAreaView style={styles.container}>
+            <View style={styles.ratingContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.textStyle}>Enjoying RacketPal?</Text>
+                <Text>Tap a star to rate it on the AppStore</Text>
+              </View>
+              <CustomRatingBar />
+              {/* <Text style={styles.textStyle}>
               {defaultRating + '/' + maxRating.length}
             </Text> */}
-            {showFeedBackMessageBox ? (
-              <View>
-                <Text style={styles.feedbackHeadingText}>
-                  Any feedback for us?
-                </Text>
-                <TextInput
-                  multiline={true}
-                  numberOfLines={5}
-                  onChangeText={e => handleFeedbackChange(e)}
-                  style={styles.textInput}
-                />
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  style={styles.buttonStyle}
-                  onPress={() => handleSubmitFeedback()}>
-                  <Text style={styles.buttonText}>Submit</Text>
+              {showFeedBackMessageBox ? (
+                <View>
+                  <Text style={styles.feedbackHeadingText}>
+                    Any feedback for us?
+                  </Text>
+                  <TextInput
+                    multiline={true}
+                    numberOfLines={5}
+                    onChangeText={e => handleFeedbackChange(e)}
+                    style={styles.textInput}
+                  />
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={styles.buttonStyle}
+                    onPress={() => handleSubmitFeedback()}>
+                    <Text style={styles.buttonText}>Submit</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <TouchableOpacity onPress={() => onHandleRemindMeLater()}>
+                  <Text style={styles.remindText}>Remind me later</Text>
                 </TouchableOpacity>
-              </View>
-            ) : (
-              <TouchableOpacity onPress={() => onHandleRemindMeLater()}>
-                <Text style={styles.remindText}>Remind me later</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        </SafeAreaView>
-      ) : (
-        <TouchableOpacity onPress={() => setRatingModal(true)}>
-          <Text>Give feedback</Text>
-        </TouchableOpacity>
-      )}
+              )}
+            </View>
+          </SafeAreaView>
+        </View>
+      </Modal>
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => setModalVisible(true)}>
+        <Text style={styles.textStyle}>Show Modal</Text>
+      </Pressable>
     </View>
   );
 };
@@ -210,6 +226,42 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
   },
 });
 
