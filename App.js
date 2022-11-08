@@ -22,14 +22,14 @@ const starImageCornet =
 const App = () => {
   const [defaultRating, setDefaultRating] = useState(2);
   const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
-  const [showFeedBackBox, setShowFeedBackBox] = useState(false);
-  const [ratingPopup, setRatingPopup] = useState(true);
+  const [showFeedBackMessageBox, setShowFeedBackMessageBox] = useState(false);
+  const [ratingModal, setRatingModal] = useState(true);
 
   useEffect(() => {
     if (defaultRating > 3) {
-      setShowFeedBackBox(false);
+      setShowFeedBackMessageBox(false);
     } else {
-      setShowFeedBackBox(true);
+      setShowFeedBackMessageBox(true);
     }
   }, []);
 
@@ -50,18 +50,19 @@ const App = () => {
     setDefaultRating(item);
     if (item > 3) {
       openStore();
-      setShowFeedBackBox(false);
+      setRatingModal(false);
+      setShowFeedBackMessageBox(false);
     } else {
-      setShowFeedBackBox(true);
+      setShowFeedBackMessageBox(true);
     }
   };
 
   const onHandleRemindMeLater = () => {
-    setRatingPopup(false);
+    setRatingModal(false);
   };
 
   const handleFeedbackChange = e => {
-    setShowFeedBackBox(e);
+    setShowFeedBackMessageBox(e);
   };
 
   const handleSubmitFeedback = () => {
@@ -74,6 +75,7 @@ const App = () => {
         {maxRating.map((item, key) => {
           return (
             <TouchableOpacity
+              style={styles.starContainer}
               activeOpacity={0.7}
               key={item}
               onPress={() => onButtonHandle(item)}>
@@ -94,20 +96,25 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      {ratingPopup ? (
+      {ratingModal ? (
         <SafeAreaView style={styles.container}>
           <View style={styles.ratingContainer}>
             <View style={styles.textContainer}>
-              <Text style={styles.textStyle}>Enjoying RacketPal</Text>
+              <Text style={styles.textStyle}>Enjoying RacketPal?</Text>
               <Text>Tap a star to rate it on the AppStore</Text>
             </View>
             <CustomRatingBar />
-            <Text style={styles.textStyle}>
+            {/* <Text style={styles.textStyle}>
               {defaultRating + '/' + maxRating.length}
-            </Text>
-            {showFeedBackBox ? (
+            </Text> */}
+            {showFeedBackMessageBox ? (
               <View>
+                <Text style={styles.feedbackHeadingText}>
+                  Any feedback for us?
+                </Text>
                 <TextInput
+                  multiline={true}
+                  numberOfLines={5}
                   onChangeText={e => handleFeedbackChange(e)}
                   style={styles.textInput}
                 />
@@ -115,7 +122,7 @@ const App = () => {
                   activeOpacity={0.7}
                   style={styles.buttonStyle}
                   onPress={() => handleSubmitFeedback()}>
-                  <Text>Submit</Text>
+                  <Text style={styles.buttonText}>Submit</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -126,7 +133,7 @@ const App = () => {
           </View>
         </SafeAreaView>
       ) : (
-        <TouchableOpacity onPress={() => setRatingPopup(true)}>
+        <TouchableOpacity onPress={() => setRatingModal(true)}>
           <Text>Give feedback</Text>
         </TouchableOpacity>
       )}
@@ -137,7 +144,7 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    padding: 15,
     justifyContent: 'center',
     backgroundColor: '#D3D3D3',
   },
@@ -146,21 +153,40 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
   },
+  starContainer: {
+    padding: 10,
+    marginTop: -30,
+  },
   textContainer: {
     alignItems: 'center',
+    paddingBottom: 20,
   },
   textInput: {
-    borderColor: 'yellow',
+    borderColor: '#ccad00',
     borderWidth: 1,
+    padding: 8,
+    borderRadius: 5,
+    marginTop: 4,
+    height: 100,
   },
   remindText: {
     alignSelf: 'center',
+    marginTop: 40,
+    color: 'grey',
+    fontWeight: 'bold',
     textTransform: 'uppercase',
   },
   textStyle: {
     textAlign: 'center',
+    marginBottom: 12,
     fontSize: 23,
+    fontWeight: 'bold',
     marginTop: 20,
+  },
+  feedbackHeadingText: {
+    marginTop: 10,
+    marginBottom: 4,
+    color: '#ccad00',
   },
   customRatingBar: {
     justifyContent: 'center',
@@ -175,9 +201,14 @@ const styles = StyleSheet.create({
   buttonStyle: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: 20,
     padding: 15,
-    backgroundColor: 'yellow',
+    borderRadius: 8,
+    backgroundColor: '#ccad00',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 
