@@ -60,6 +60,14 @@ const App = () => {
     setRatingPopup(false);
   };
 
+  const handleFeedbackChange = e => {
+    setShowFeedBackBox(e);
+  };
+
+  const handleSubmitFeedback = () => {
+    console.log('called');
+  };
+
   const CustomRatingBar = () => {
     return (
       <View style={styles.customRatingBar}>
@@ -99,11 +107,14 @@ const App = () => {
             </Text>
             {showFeedBackBox ? (
               <View>
-                <TextInput style={styles.textInput} />
+                <TextInput
+                  onChangeText={e => handleFeedbackChange(e)}
+                  style={styles.textInput}
+                />
                 <TouchableOpacity
                   activeOpacity={0.7}
                   style={styles.buttonStyle}
-                  onPress={() => alert(defaultRating)}>
+                  onPress={() => handleSubmitFeedback()}>
                   <Text>Submit</Text>
                 </TouchableOpacity>
               </View>
