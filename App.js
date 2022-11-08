@@ -22,6 +22,7 @@ const starImageCornet =
 const App = () => {
   const [defaultRating, setDefaultRating] = useState(2);
   const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
+  const [feedBackMessage, setFeedBackMessage] = useState('');
   const [showFeedBackMessageBox, setShowFeedBackMessageBox] = useState(false);
   const [ratingModal, setRatingModal] = useState(true);
 
@@ -62,11 +63,11 @@ const App = () => {
   };
 
   const handleFeedbackChange = e => {
-    setShowFeedBackMessageBox(e);
+    setFeedBackMessage(e);
   };
 
   const handleSubmitFeedback = () => {
-    console.log('called');
+    console.log('Handle Submit button -> ', feedBackMessage);
   };
 
   const CustomRatingBar = () => {
