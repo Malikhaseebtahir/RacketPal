@@ -13,7 +13,7 @@ import {
   View,
 } from 'react-native';
 
-const GOOGLE_PACKAGE_NAME = 'agrawal.trial.yourfeedback';
+const GOOGLE_PACKAGE_NAME = 'racketPal.trial.yourfeedback';
 const APPLE_STORE_ID = 'id1453817491';
 
 const starImageField =
@@ -23,14 +23,14 @@ const starImageCornet =
 
 const App = () => {
   const [timePassed, setTimePassed] = useState(true);
-  const [ratingModalShownCount, setRatingModalShownCount] = useState(0);
-  const [defaultRating, setDefaultRating] = useState(2);
-  const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
-  const [feedBackMessage, setFeedBackMessage] = useState('');
-  const [showFeedBackMessageBox, setShowFeedBackMessageBox] = useState(false);
   const [ratingModal, setRatingModal] = useState(true);
-  const [modalVisible, setModalVisible] = useState(false);
   const [ratingGiven, setRatingGiven] = useState(false);
+  const [defaultRating, setDefaultRating] = useState(2);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [feedBackMessage, setFeedBackMessage] = useState('');
+  const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
+  const [ratingModalShownCount, setRatingModalShownCount] = useState(0);
+  const [showFeedBackMessageBox, setShowFeedBackMessageBox] = useState(false);
 
   useEffect(() => {
     if (defaultRating > 3) {
@@ -53,7 +53,7 @@ const App = () => {
 
   const openStore = () => {
     //This is the main trick
-    if (Platform.OS != 'ios') {
+    if (Platform.OS !== 'ios') {
       Linking.openURL(
         'https://play.google.com/store/apps/details?id=com.racketpal&hl=en&gl=US',
       ).catch(err => alert('Please check for Google Play Store'));
@@ -285,9 +285,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 15,
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
   },
 });
 
