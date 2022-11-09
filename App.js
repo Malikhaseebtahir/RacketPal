@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-  Pressable,
   Linking,
   Modal,
   View,
@@ -23,6 +22,8 @@ const starImageCornet =
   'https://raw.githubusercontent.com/tranhonghan/images/main/star_corner.png';
 
 const App = () => {
+  const [timePassed, setTimePassed] = useState(true);
+  const [ratingModalShownCount, setRatingModalShownCount] = useState(0);
   const [defaultRating, setDefaultRating] = useState(2);
   const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
   const [feedBackMessage, setFeedBackMessage] = useState('');
@@ -36,7 +37,18 @@ const App = () => {
     } else {
       setShowFeedBackMessageBox(true);
     }
-  }, []);
+
+    setTimeout(() => {
+      setTimePassed(true);
+      setRatingModalShownCount(value => value + 1);
+    }, getTimeDuration());
+  }, [timePassed]);
+
+  // get 24 hour duration.
+  function getTimeDuration() {
+    const ts = Math.round(new Date().getTime() / 1000);
+    return ts - 24 * 3600;
+  }
 
   const openStore = () => {
     //This is the main trick
@@ -63,7 +75,8 @@ const App = () => {
   };
 
   const onHandleRemindMeLater = () => {
-    setRatingModal(false);
+    setModalVisible(false);
+    setTimePassed(false);
   };
 
   const handleFeedbackChange = e => {
@@ -102,7 +115,7 @@ const App = () => {
   };
 
   return (
-    <View style={styles.centeredView}>
+    <View style={styles.container}>
       <Modal
         animationType="slide"
         transparent={true}
@@ -149,11 +162,26 @@ const App = () => {
           </SafeAreaView>
         </View>
       </Modal>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyle}>Show Modal</Text>
-      </Pressable>
+      {timePassed && ratingModalShownCount < 4 ? (
+        <View style={styles.modalContainer}>
+          <Text style={styles.textStyle}>Enjoying RacketPal?</Text>
+          <Text style={styles.rateUsPara}>
+            Your App Store review greatly helps spread the word and grow the
+            racket sports community!
+          </Text>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.rateUsButton}
+            onPress={() => setModalVisible(true)}>
+            <Text style={styles.buttonText}>Rate Us</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.giveUsFeedbackTextContainer}>
+            <Text style={styles.giveUsFeedbackText}>
+              Not yet? Give us feedback
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -161,8 +189,8 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
     justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#D3D3D3',
   },
   ratingContainer: {
@@ -205,6 +233,9 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     color: '#ccad00',
   },
+  rateUsPara: {
+    textAlign: 'center',
+  },
   customRatingBar: {
     justifyContent: 'center',
     flexDirection: 'row',
@@ -223,15 +254,24 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: '#ccad00',
   },
+  giveUsFeedbackTextContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  giveUsFeedbackText: {
+    textDecorationLine: 'underline',
+  },
+  rateUsButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+    padding: 15,
+    borderRadius: 8,
+    backgroundColor: '#0096FF',
+  },
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -248,6 +288,12 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  modalContainer: {
+    width: 340,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 15,
+  },
   button: {
     borderRadius: 20,
     padding: 10,
@@ -258,10 +304,6 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: '#2196F3',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
   },
 });
 
