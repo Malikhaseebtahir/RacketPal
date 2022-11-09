@@ -90,6 +90,10 @@ const App = () => {
     setRatingGiven(true);
   };
 
+  const onHandleNotYet = () => {
+    console.log('Navigating the screen.');
+  };
+
   const CustomRatingBar = () => {
     return (
       <View style={styles.customRatingBar}>
@@ -176,7 +180,9 @@ const App = () => {
             onPress={() => setModalVisible(true)}>
             <Text style={styles.buttonText}>Rate Us</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.giveUsFeedbackTextContainer}>
+          <TouchableOpacity
+            onPress={() => onHandleNotYet()}
+            style={styles.giveUsFeedbackTextContainer}>
             <Text style={styles.giveUsFeedbackText}>
               Not yet? Give us feedback
             </Text>
