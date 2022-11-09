@@ -137,9 +137,6 @@ const App = () => {
                 <Text>Tap a star to rate it on the AppStore</Text>
               </View>
               <CustomRatingBar />
-              {/* <Text style={styles.textStyle}>
-              {defaultRating + '/' + maxRating.length}
-            </Text> */}
               {showFeedBackMessageBox ? (
                 <View>
                   <Text style={styles.feedbackHeadingText}>
