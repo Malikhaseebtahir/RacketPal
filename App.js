@@ -30,6 +30,7 @@ const App = () => {
   const [showFeedBackMessageBox, setShowFeedBackMessageBox] = useState(false);
   const [ratingModal, setRatingModal] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
+  const [ratingGiven, setRatingGiven] = useState(false);
 
   useEffect(() => {
     if (defaultRating > 3) {
@@ -86,7 +87,7 @@ const App = () => {
   const handleSubmitFeedback = () => {
     setRatingModal(false);
     setModalVisible(false);
-    console.log('Handle Submit button -> ', feedBackMessage);
+    setRatingGiven(true);
   };
 
   const CustomRatingBar = () => {
@@ -162,7 +163,7 @@ const App = () => {
           </SafeAreaView>
         </View>
       </Modal>
-      {timePassed && ratingModalShownCount < 4 ? (
+      {timePassed && !ratingGiven && ratingModalShownCount < 5 ? (
         <View style={styles.modalContainer}>
           <Text style={styles.textStyle}>Enjoying RacketPal?</Text>
           <Text style={styles.rateUsPara}>
